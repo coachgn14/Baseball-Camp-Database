@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>College Baseball Camp Database</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0C2340;
+  --navy-mid:#0f2d55;
+  --navy-light:#1a3a6b;
+  --orange:#E87722;
+  --orange-light:#f08c3a;
+  --chalk:#f8f6f2;
+  --chalk-mid:#ede9e0;
+  --white:#ffffff;
+  --text-dark:#0C2340;
+  --text-mid:#3a4a5c;
+  --text-light:#6a7a8c;
+  --radius:8px;
+  --radius-lg:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --chalk:#0C2340;
+    --chalk-mid:#0f2d55;
+    --white:#1a3a6b;
+    --text-dark:#f8f6f2;
+    --text-mid:#b0bec8;
+    --text-light:#6a7a8c;
+  }
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dark);-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.header{background:var(--navy);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:2px solid var(--orange)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);letter-spacing:1px}
+.logo span{color:var(--orange)}
+.header-right{display:flex;align-items:center;gap:12px}
+.camp-count{font-size:12px;color:rgba(255,255,255,0.5)}
+.camp-count strong{color:var(--orange)}
+.add-btn{background:var(--orange);color:#fff;border:none;border-radius:var(--radius);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+.add-btn:hover{background:var(--orange-light)}
+
+/* HERO */
+.hero{background:var(--navy);padding:48px 24px 56px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--orange),transparent)}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,80px);color:#fff;line-height:0.95;margin-bottom:16px;letter-spacing:1px}
+.hero h1 span{color:var(--orange)}
+.hero p{font-size:16px;color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto}
+
+/* FILTERS */
+.filters-bar{background:var(--white);border-bottom:0.5px solid var(--chalk-mid);padding:16px 24px;position:sticky;top:57px;z-index:90}
+.filters-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-group{display:flex;flex-direction:column;gap:4px;min-width:140px;flex:1}
+.filter-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light)}
+.filter-select,.filter-input{padding:7px 10px;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);font-size:13px;background:var(--chalk);color:var(--text-dark);font-family:'Inter',sans-serif;width:100%}
+.filter-select:focus,.filter-input:focus{outline:none;border-color:var(--orange)}
+.filter-search{flex:2;min-width:200px}
+.clear-btn{background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:7px 14px;font-size:12px;color:var(--text-light);cursor:pointer;font-family:'Inter',sans-serif;white-space:nowrap;align-self:flex-end}
+.clear-btn:hover{background:var(--chalk-mid);color:var(--text-dark)}
+.results-bar{max-width:1100px;margin:12px auto 0;font-size:12px;color:var(--text-light)}
+.results-bar strong{color:var(--text-dark)}
+
+/* MAIN */
+.main{max-width:1100px;margin:0 auto;padding:24px 16px}
+
+/* CAMP CARDS */
+.camps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.camp-card{background:var(--white);border:0.5px solid var(--chalk-mid);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow 0.15s,transform 0.15s}
+.camp-card:hover{box-shadow:0 8px 24px rgba(12,35,64,0.1);transform:translateY(-2px)}
+.card-top{padding:16px 16px 12px;border-bottom:0.5px solid var(--chalk-mid)}
+.card-badges{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.badge{font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px}
+.badge-d1{background:#E6F0FB;color:#0C447C}
+.badge-d2{background:#EAF3DE;color:#27500A}
+.badge-d3{background:#EDE9FE;color:#3C3489}
+.badge-juco{background:#FAEEDA;color:#633806}
+.badge-naia{background:#FCE7F3;color:#831843}
+.badge-type{background:var(--navy);color:#fff}
+.school-name{font-size:16px;font-weight:600;color:var(--text-dark);margin-bottom:2px}
+.camp-name{font-size:13px;color:var(--text-mid)}
+.card-details{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.detail-item{display:flex;flex-direction:column;gap:2px}
+.detail-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light)}
+.detail-value{font-size:13px;color:var(--text-dark);font-weight:500}
+.detail-value.date{color:var(--orange);font-weight:600}
+.card-footer{padding:10px 16px;background:var(--chalk);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cost-tag{font-size:14px;font-weight:700;color:var(--text-dark)}
+.cost-tag span{font-size:11px;font-weight:400;color:var(--text-light)}
+.register-btn{background:var(--orange);color:#fff;border:none;border-radius:var(--radius);padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block}
+.register-btn:hover{background:var(--orange-light)}
+.spots-tag{font-size:11px;color:var(--text-light);margin-top:4px}
+.spots-tag.limited{color:#c0392b;font-weight:600}
+
+/* EMPTY */
+.empty{text-align:center;padding:4rem 1rem;color:var(--text-light)}
+.empty-icon{font-size:48px;display:block;margin-bottom:12px}
+.empty h3{font-size:18px;color:var(--text-dark);margin-bottom:8px}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;width:min(580px,100%);max-height:90vh;overflow-y:auto;border:0.5px solid var(--chalk-mid)}
+.modal h3{font-size:17px;font-weight:600;margin-bottom:1.25rem;color:var(--text-dark)}
+.modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}
+.field.full{grid-column:1/-1}
+.field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light)}
+.field input,.field select,.field textarea{padding:8px 10px;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);font-size:13px;background:var(--chalk);color:var(--text-dark);font-family:'Inter',sans-serif}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--orange)}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid var(--chalk-mid)}
+.btn-cancel{background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:8px 16px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-dark)}
+.btn-save{background:var(--orange);color:#fff;border:none;border-radius:var(--radius);padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity 0.3s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1}
+
+@media(max-width:600px){
+  .filters-inner{flex-direction:column}
+  .filter-group{min-width:100%}
+  .modal-grid{grid-template-columns:1fr}
+  .camps-grid{grid-template-columns:1fr}
+  .hero{padding:32px 16px 40px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">Baseball<span>Camps</span></div>
+  <div class="header-right">
+    <span class="camp-count">Showing <strong id="count">0</strong> camps</span>
+    <button class="add-btn" onclick="openModal()">+ Add Camp</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-eyebrow">College Baseball Recruiting</div>
+  <h1>Find Your<br/><span>Next Camp.</span></h1>
+  <p>Browse college baseball camps by date, location, division, and cost. Updated regularly.</p>
+</section>
+
+<div class="filters-bar">
+  <div class="filters-inner">
+    <div class="filter-group filter-search">
+      <div class="filter-label">Search</div>
+      <input class="filter-input" id="f-search" placeholder="School name, city, state..." oninput="applyFilters()"/>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Month</div>
+      <select class="filter-select" id="f-month" onchange="applyFilters()">
+        <option value="">All months</option>
+        <option>January</option><option>February</option><option>March</option>
+        <option>April</option><option>May</option><option>June</option>
+        <option>July</option><option>August</option><option>September</option>
+        <option>October</option><option>November</option><option>December</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Division</div>
+      <select class="filter-select" id="f-div" onchange="applyFilters()">
+        <option value="">All divisions</option>
+        <option>D1</option><option>D2</option><option>D3</option><option>JUCO</option><option>NAIA</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">State</div>
+      <select class="filter-select" id="f-state" onchange="applyFilters()">
+        <option value="">All states</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Camp Type</div>
+      <select class="filter-select" id="f-type" onchange="applyFilters()">
+        <option value="">All types</option>
+        <option>Prospect Camp</option><option>ID Camp</option><option>Team Camp</option>
+        <option>Position Camp</option><option>Pitching Camp</option><option>Hitting Camp</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Max Cost</div>
+      <select class="filter-select" id="f-cost" onchange="applyFilters()">
+        <option value="">Any cost</option>
+        <option value="100">Under $100</option>
+        <option value="200">Under $200</option>
+        <option value="300">Under $300</option>
+        <option value="500">Under $500</option>
+      </select>
+    </div>
+    <button class="clear-btn" onclick="clearFilters()">Clear filters</button>
+  </div>
+  <div class="filters-inner">
+    <div class="results-bar" id="results-bar"></div>
+  </div>
+</div>
+
+<main class="main">
+  <div class="camps-grid" id="camps-grid"></div>
+</main>
+
+<!-- Add Camp Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="modal-title">Add Camp</h3>
+    <div class="modal-grid">
+      <div class="field full"><label>School Name *</label><input id="m-school" placeholder="e.g. University of Florida"/></div>
+      <div class="field full"><label>Camp Name</label><input id="m-campname" placeholder="e.g. Gator Prospect Camp"/></div>
+      <div class="field"><label>Division *</label>
+        <select id="m-div"><option>D1</option><option>D2</option><option>D3</option><option>JUCO</option><option>NAIA</option></select>
+      </div>
+      <div class="field"><label>Camp Type</label>
+        <select id="m-type">
+          <option>Prospect Camp</option><option>ID Camp</option><option>Team Camp</option>
+          <option>Position Camp</option><option>Pitching Camp</option><option>Hitting Camp</option>
+        </select>
+      </div>
+      <div class="field"><label>City</label><input id="m-city" placeholder="Gainesville"/></div>
+      <div class="field"><label>State *</label><input id="m-state" placeholder="FL" maxlength="2" style="text-transform:uppercase"/></div>
+      <div class="field"><label>Camp Date *</label><input id="m-date" type="date"/></div>
+      <div class="field"><label>End Date (if multi-day)</label><input id="m-dateend" type="date"/></div>
+      <div class="field"><label>Cost ($)</label><input id="m-cost" type="number" placeholder="175" min="0"/></div>
+      <div class="field"><label>Spots Available</label><input id="m-spots" placeholder="e.g. 40 spots, Limited"/></div>
+      <div class="field full"><label>Registration Link</label><input id="m-link" type="url" placeholder="https://..."/></div>
+      <div class="field full"><label>Notes</label><textarea id="m-notes" rows="2" placeholder="Any extra details, age groups, requirements..."></textarea></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveCamp()">Save Camp</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const STATES=['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
+const DIV_COLORS={D1:'badge-d1',D2:'badge-d2',D3:'badge-d3',JUCO:'badge-juco',NAIA:'badge-naia'};
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+let camps=JSON.parse(localStorage.getItem('baseballCamps')||'[]');
+let editIdx=null;
+
+// Populate state dropdown
+const stateEl=document.getElementById('f-state');
+STATES.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;stateEl.appendChild(o);});
+
+function save(){localStorage.setItem('baseballCamps',JSON.stringify(camps));}
+
+function formatDate(dateStr,endStr){
+  if(!dateStr)return'TBD';
+  const d=new Date(dateStr+'T12:00:00');
+  const opts={month:'short',day:'numeric',year:'numeric'};
+  const start=d.toLocaleDateString('en-US',opts);
+  if(!endStr)return start;
+  const e=new Date(endStr+'T12:00:00');
+  if(d.getMonth()===e.getMonth())return`${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${e.getDate()}, ${e.getFullYear()}`;
+  return`${start} – ${e.toLocaleDateString('en-US',opts)}`;
+}
+
+function getMonth(dateStr){
+  if(!dateStr)return'';
+  const d=new Date(dateStr+'T12:00:00');
+  return MONTHS[d.getMonth()];
+}
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function applyFilters(){
+  const search=document.getElementById('f-search').value.toLowerCase().trim();
+  const month=document.getElementById('f-month').value;
+  const div=document.getElementById('f-div').value;
+  const state=document.getElementById('f-state').value;
+  const type=document.getElementById('f-type').value;
+  const maxCost=document.getElementById('f-cost').value;
+
+  const filtered=camps.filter(c=>{
+    if(search&&!`${c.school} ${c.city} ${c.state} ${c.campname}`.toLowerCase().includes(search))return false;
+    if(month&&getMonth(c.date)!==month)return false;
+    if(div&&c.division!==div)return false;
+    if(state&&c.state.toUpperCase()!==state)return false;
+    if(type&&c.type!==type)return false;
+    if(maxCost&&c.cost&&parseFloat(c.cost)>parseFloat(maxCost))return false;
+    return true;
+  });
+
+  // Sort by date
+  filtered.sort((a,b)=>{
+    if(!a.date)return 1;if(!b.date)return -1;
+    return new Date(a.date)-new Date(b.date);
+  });
+
+  document.getElementById('count').textContent=filtered.length;
+  document.getElementById('results-bar').innerHTML=filtered.length===camps.length
+    ?`Showing all <strong>${camps.length}</strong> camps`
+    :`Showing <strong>${filtered.length}</strong> of ${camps.length} camps`;
+
+  const grid=document.getElementById('camps-grid');
+  if(!filtered.length){
+    grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><span class="empty-icon">⚾</span><h3>No camps match your filters</h3><p>Try adjusting your search or clearing filters.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML=filtered.map(c=>{
+    const idx=camps.indexOf(c);
+    const divClass=DIV_COLORS[c.division]||'badge-d1';
+    return`
+    <div class="camp-card">
+      <div class="card-top">
+        <div class="card-badges">
+          <span class="badge ${divClass}">${esc(c.division)}</span>
+          <span class="badge badge-type">${esc(c.type||'Camp')}</span>
+        </div>
+        <div class="school-name">${esc(c.school)}</div>
+        ${c.campname?`<div class="camp-name">${esc(c.campname)}</div>`:''}
+      </div>
+      <div class="card-details">
+        <div class="detail-item">
+          <div class="detail-label">Date</div>
+          <div class="detail-value date">${formatDate(c.date,c.dateend)}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-label">Location</div>
+          <div class="detail-value">${esc(c.city?c.city+', ':'')}${esc(c.state)}</div>
+        </div>
+        ${c.notes?`<div class="detail-item" style="grid-column:1/-1"><div class="detail-label">Notes</div><div class="detail-value" style="font-weight:400;color:var(--text-mid);font-size:12px">${esc(c.notes)}</div></div>`:''}
+      </div>
+      <div class="card-footer">
+        <div>
+          <div class="cost-tag">${c.cost?'$'+parseFloat(c.cost).toFixed(0):'Free / TBD'} <span>per player</span></div>
+          ${c.spots?`<div class="spots-tag${c.spots.toLowerCase().includes('limit')||parseInt(c.spots)<20?' limited':''}">${esc(c.spots)} spots</div>`:''}
+        </div>
+        <div style="display:flex;gap:6px">
+          <button onclick="editCamp(${idx})" style="background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:var(--text-light);font-family:'Inter',sans-serif">Edit</button>
+          ${c.link?`<a href="${esc(c.link)}" target="_blank" class="register-btn">Register →</a>`:`<button class="register-btn" style="opacity:0.5;cursor:default">No link yet</button>`}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function clearFilters(){
+  ['f-search','f-month','f-div','f-state','f-type','f-cost'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el.tagName==='INPUT')el.value='';
+    else el.selectedIndex=0;
+  });
+  applyFilters();
+}
+
+function openModal(idx=null){
+  editIdx=idx;
+  clearForm();
+  if(idx!==null){
+    const c=camps[idx];
+    document.getElementById('m-school').value=c.school||'';
+    document.getElementById('m-campname').value=c.campname||'';
+    document.getElementById('m-div').value=c.division||'D1';
+    document.getElementById('m-type').value=c.type||'Prospect Camp';
+    document.getElementById('m-city').value=c.city||'';
+    document.getElementById('m-state').value=c.state||'';
+    document.getElementById('m-date').value=c.date||'';
+    document.getElementById('m-dateend').value=c.dateend||'';
+    document.getElementById('m-cost').value=c.cost||'';
+    document.getElementById('m-spots').value=c.spots||'';
+    document.getElementById('m-link').value=c.link||'';
+    document.getElementById('m-notes').value=c.notes||'';
+    document.getElementById('modal-title').textContent='Edit Camp';
+  } else {
+    document.getElementById('modal-title').textContent='Add Camp';
+  }
+  document.getElementById('modal').classList.add('open');
+}
+
+function editCamp(idx){openModal(idx);}
+function closeModal(){document.getElementById('modal').classList.remove('open');editIdx=null;}
+function clearForm(){['m-school','m-campname','m-city','m-state','m-date','m-dateend','m-cost','m-spots','m-link','m-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('m-div').selectedIndex=0;document.getElementById('m-type').selectedIndex=0;}
+
+function saveCamp(){
+  const school=document.getElementById('m-school').value.trim();
+  const state=document.getElementById('m-state').value.trim().toUpperCase();
+  if(!school){alert('School name is required.');return;}
+  if(!state){alert('State is required.');return;}
+  const camp={
+    school,campname:document.getElementById('m-campname').value.trim(),
+    division:document.getElementById('m-div').value,
+    type:document.getElementById('m-type').value,
+    city:document.getElementById('m-city').value.trim(),
+    state,
+    date:document.getElementById('m-date').value,
+    dateend:document.getElementById('m-dateend').value,
+    cost:document.getElementById('m-cost').value,
+    spots:document.getElementById('m-spots').value.trim(),
+    link:document.getElementById('m-link').value.trim(),
+    notes:document.getElementById('m-notes').value.trim(),
+  };
+  if(editIdx!==null)camps[editIdx]=camp;
+  else camps.push(camp);
+  save();closeModal();applyFilters();
+  showToast(editIdx!==null?'Camp updated!':'Camp added!');
+}
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// Demo data
+if(!camps.length){
+  camps=[
+    {school:'University of Florida',campname:'Gator Prospect Camp',division:'D1',type:'Prospect Camp',city:'Gainesville',state:'FL',date:'2025-06-14',dateend:'2025-06-15',cost:'175',spots:'60',link:'https://floridagators.com',notes:'Open to all HS players. Coaches evaluate all attendees.'},
+    {school:'Vanderbilt University',campname:'Commodore ID Camp',division:'D1',type:'ID Camp',city:'Nashville',state:'TN',date:'2025-06-21',dateend:'',cost:'250',spots:'Limited — 40',link:'https://vucommodores.com',notes:'Pitchers and position players welcome. Film review included.'},
+    {school:'LSU Tigers',campname:'Summer Prospect Camp',division:'D1',type:'Prospect Camp',city:'Baton Rouge',state:'LA',date:'2025-07-12',dateend:'2025-07-13',cost:'200',spots:'80',link:'https://lsusports.net',notes:''},
+    {school:'Ole Miss',campname:'Rebel Baseball Camp',division:'D1',type:'Position Camp',city:'Oxford',state:'MS',date:'2025-06-07',dateend:'',cost:'150',spots:'50',link:'https://olemisssports.com',notes:'Infielders and outfielders only.'},
+    {school:'TCU Horned Frogs',campname:'TCU Prospect ID',division:'D1',type:'ID Camp',city:'Fort Worth',state:'TX',date:'2025-07-19',dateend:'',cost:'195',spots:'45',link:'https://gofrogs.com',notes:''},
+    {school:'Cal State Fullerton',campname:'Titan Pitching Camp',division:'D1',type:'Pitching Camp',city:'Fullerton',state:'CA',date:'2025-08-02',dateend:'',cost:'125',spots:'30',link:'https://fullertontitans.com',notes:'Pitchers only. Video analysis included.'},
+    {school:'Coastal Carolina',campname:'Chanticleer Summer Camp',division:'D1',type:'Prospect Camp',city:'Conway',state:'SC',date:'2025-07-26',dateend:'2025-07-27',cost:'180',spots:'70',link:'https://goccusports.com',notes:''},
+    {school:'Dallas Baptist University',campname:'DBU Prospect Camp',division:'D1',type:'Prospect Camp',city:'Dallas',state:'TX',date:'2025-06-28',dateend:'',cost:'165',spots:'55',link:'https://dbupatriots.com',notes:''},
+    {school:'University of Arizona',campname:'Wildcat ID Camp',division:'D1',type:'ID Camp',city:'Tucson',state:'AZ',date:'2025-07-05',dateend:'',cost:'220',spots:'Limited — 35',link:'https://arizonawildcats.com',notes:'Rising juniors and seniors only.'},
+    {school:'Wake Forest',campname:'Demon Deacon Prospect Camp',division:'D1',type:'Prospect Camp',city:'Winston-Salem',state:'NC',date:'2025-08-09',dateend:'',cost:'175',spots:'50',link:'https://godeacs.com',notes:''},
+    {school:'Wabash Valley College',campname:'Warrior Baseball Camp',division:'JUCO',type:'Prospect Camp',city:'Mount Carmel',state:'IL',date:'2025-07-18',dateend:'',cost:'75',spots:'40',link:'',notes:'JUCO camp open to all ages.'},
+    {school:'Belmont Abbey College',campname:'Crusader ID Camp',division:'D2',type:'ID Camp',city:'Belmont',state:'NC',date:'2025-06-21',dateend:'',cost:'100',spots:'35',link:'',notes:''},
+  ];
+  save();
+}
+
+applyFilters();
+</script>
+</body>
+</html>
