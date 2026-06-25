@@ -315,8 +315,8 @@ function applyFilters(){
       </div>`:''}
       <div class="card-footer">
         <div style="display:flex;gap:6px;align-items:center">
-          <button onclick="editCamp('${c.id}')" class="btn-edit">Edit</button>
-          <button onclick="removeCamp('${c.id}')" class="btn-delete">Delete</button>
+          <button onclick="editCamp(${c.id})" class="btn-edit">Edit</button>
+          <button onclick="removeCamp(${c.id})" class="btn-delete">Delete</button>
         </div>
         ${c.link?`<a href="${esc(c.link)}" target="_blank" class="register-btn">Register →</a>`:`<button class="register-btn" style="opacity:0.5;cursor:default">No link yet</button>`}
       </div>
@@ -360,7 +360,7 @@ function openModal(id=null){
   }
   document.getElementById('modal').classList.add('open');
 }
-function editCamp(id){openModal(id);}
+function editCamp(id){const camp=camps.find(x=>x.id===id);if(camp)openModal(camp.id);else openModal(id);}
 function closeModal(){document.getElementById('modal').classList.remove('open');editId=null;}
 function clearForm(){['m-school','m-campname','m-city','m-state','m-date','m-dateend','m-link','m-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('m-div').selectedIndex=0;document.getElementById('m-type').selectedIndex=0;}
 async function saveCamp(){
