@@ -43,7 +43,7 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 .results-bar{max-width:1100px;margin:12px auto 0;font-size:12px;color:var(--text-light)}
 .results-bar strong{color:var(--text-dark)}
 .main{max-width:1100px;margin:0 auto;padding:24px 16px}
-.camps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px}
+.camps-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .camp-card{background:var(--white);border:0.5px solid var(--chalk-mid);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow 0.15s,transform 0.15s}
 .camp-card:hover{box-shadow:0 8px 24px rgba(12,35,64,0.1);transform:translateY(-2px)}
 .card-top{padding:16px 16px 12px;border-bottom:0.5px solid var(--chalk-mid)}
@@ -59,20 +59,32 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 .detail-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light)}
 .detail-value{font-size:13px;color:var(--text-dark);font-weight:500}
 .detail-value.date{color:var(--orange);font-weight:600}
-.card-footer{padding:10px 16px;background:var(--chalk);display:flex;align-items:center;justify-content:space-between;gap:8px}
-.cost-tag{font-size:14px;font-weight:700;color:var(--text-dark)}
-.cost-tag span{font-size:11px;font-weight:400;color:var(--text-light)}
+.tiers-section{border-top:0.5px solid var(--chalk-mid)}
+.tiers-toggle{width:100%;background:transparent;border:none;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text-dark)}
+.tiers-toggle:hover{background:var(--chalk)}
+.tiers-toggle .arrow{font-size:11px;color:var(--text-light);transition:transform 0.2s}
+.tiers-toggle.open .arrow{transform:rotate(180deg)}
+.tiers-body{display:none;padding:0 16px 12px}
+.tiers-body.open{display:block}
+.tier-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:0.5px solid var(--chalk-mid)}
+.tier-row:last-child{border-bottom:none}
+.tier-name{font-size:13px;color:var(--text-dark)}
+.tier-price{font-size:14px;font-weight:700;color:var(--navy)}
+.starting-from{font-size:11px;color:var(--text-light);padding:8px 16px 0}
+.card-footer{padding:10px 16px;background:var(--chalk);display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:0.5px solid var(--chalk-mid)}
 .register-btn{background:var(--orange);color:#fff;border:none;border-radius:var(--radius);padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;display:inline-block}
 .register-btn:hover{background:var(--orange-light)}
-.spots-tag{font-size:11px;color:var(--text-light);margin-top:4px}
-.spots-tag.limited{color:#c0392b;font-weight:600}
-.empty{text-align:center;padding:4rem 1rem;color:var(--text-light)}
+.btn-edit{background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:var(--text-light);font-family:'Inter',sans-serif}
+.btn-edit:hover{background:var(--chalk-mid)}
+.btn-delete{background:transparent;border:0.5px solid #FCEBEB;border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:#791F1F;font-family:'Inter',sans-serif}
+.btn-delete:hover{background:#FCEBEB}
+.empty{text-align:center;padding:4rem 1rem;color:var(--text-light);grid-column:1/-1}
 .empty-icon{font-size:48px;display:block;margin-bottom:12px}
 .empty h3{font-size:18px;color:var(--text-dark);margin-bottom:8px}
-.loading{text-align:center;padding:4rem;color:var(--text-light);font-size:14px}
+.loading{text-align:center;padding:4rem;color:var(--text-light);font-size:14px;grid-column:1/-1}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
 .modal-bg.open{display:flex}
-.modal{background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;width:min(580px,100%);max-height:90vh;overflow-y:auto;border:0.5px solid var(--chalk-mid)}
+.modal{background:var(--white);border-radius:var(--radius-lg);padding:1.5rem;width:min(600px,100%);max-height:90vh;overflow-y:auto;border:0.5px solid var(--chalk-mid)}
 .modal h3{font-size:17px;font-weight:600;margin-bottom:1.25rem;color:var(--text-dark)}
 .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:4px}
@@ -80,6 +92,15 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 .field label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-light)}
 .field input,.field select,.field textarea{padding:8px 10px;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);font-size:13px;background:var(--chalk);color:var(--text-dark);font-family:'Inter',sans-serif}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--orange)}
+.section-divider{grid-column:1/-1;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);border-top:0.5px solid var(--chalk-mid);padding-top:12px;margin-top:4px}
+.tiers-editor{grid-column:1/-1}
+.tier-input-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-bottom:8px;align-items:center}
+.tier-input-row input{padding:7px 10px;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);font-size:13px;background:var(--chalk);color:var(--text-dark);font-family:'Inter',sans-serif}
+.tier-input-row input:focus{outline:none;border-color:var(--orange)}
+.tier-price-input{width:100px!important}
+.remove-tier{background:transparent;border:0.5px solid #FCEBEB;border-radius:var(--radius);padding:6px 8px;font-size:12px;cursor:pointer;color:#791F1F;font-family:'Inter',sans-serif;white-space:nowrap}
+.add-tier-btn{background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;color:var(--text-mid);font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:4px}
+.add-tier-btn:hover{background:var(--chalk-mid)}
 .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:1.25rem;padding-top:1rem;border-top:0.5px solid var(--chalk-mid)}
 .btn-cancel{background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:8px 16px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--text-dark)}
 .btn-save{background:var(--orange);color:#fff;border:none;border-radius:var(--radius);padding:8px 20px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif}
@@ -87,9 +108,7 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 .toast.show{opacity:1}
 .error-bar{background:#FCEBEB;color:#791F1F;padding:10px 24px;text-align:center;font-size:13px;display:none}
 .error-bar.show{display:block}
-.btn-delete{background:transparent;border:0.5px solid #FCEBEB;border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:#791F1F;font-family:'Inter',sans-serif}
-.btn-delete:hover{background:#FCEBEB}
-@media(max-width:600px){.filters-inner{flex-direction:column}.filter-group{min-width:100%}.modal-grid{grid-template-columns:1fr}.camps-grid{grid-template-columns:1fr}.hero{padding:32px 16px 40px}}
+@media(max-width:600px){.filters-inner{flex-direction:column}.filter-group{min-width:100%}.modal-grid{grid-template-columns:1fr}.camps-grid{grid-template-columns:1fr}.hero{padding:32px 16px 40px}.tier-input-row{grid-template-columns:1fr auto}}
 </style>
 </head>
 <body>
@@ -145,6 +164,8 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
         <option value="">All types</option>
         <option>Prospect Camp</option><option>ID Camp</option><option>Team Camp</option>
         <option>Position Camp</option><option>Pitching Camp</option><option>Hitting Camp</option>
+        <option>Kids Camp</option><option>Elite Camp</option><option>Showcase</option>
+        <option>Fall Camp</option><option>Winter Clinic</option><option>Overnight Camp</option>
       </select>
     </div>
     <div class="filter-group">
@@ -165,7 +186,7 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 </div>
 
 <main class="main">
-  <div class="camps-grid" id="camps-grid"><div class="loading" style="grid-column:1/-1">Loading camps...</div></div>
+  <div class="camps-grid" id="camps-grid"><div class="loading">Loading camps...</div></div>
 </main>
 
 <div class="modal-bg" id="modal">
@@ -181,16 +202,19 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
         <select id="m-type">
           <option>Prospect Camp</option><option>ID Camp</option><option>Team Camp</option>
           <option>Position Camp</option><option>Pitching Camp</option><option>Hitting Camp</option>
+          <option>Kids Camp</option><option>Elite Camp</option><option>Showcase</option>
+          <option>Fall Camp</option><option>Winter Clinic</option><option>Overnight Camp</option>
         </select>
       </div>
       <div class="field"><label>City</label><input id="m-city" placeholder="Gainesville"/></div>
       <div class="field"><label>State *</label><input id="m-state" placeholder="FL" maxlength="2" style="text-transform:uppercase"/></div>
       <div class="field"><label>Camp Date *</label><input id="m-date" type="date"/></div>
       <div class="field"><label>End Date (if multi-day)</label><input id="m-dateend" type="date"/></div>
-      <div class="field"><label>Cost ($)</label><input id="m-cost" type="number" placeholder="175" min="0"/></div>
-      <div class="field"><label>Spots Available</label><input id="m-spots" placeholder="e.g. 40 spots, Limited"/></div>
       <div class="field full"><label>Registration Link</label><input id="m-link" type="url" placeholder="https://..."/></div>
-      <div class="field full"><label>Notes</label><textarea id="m-notes" rows="2" placeholder="Any extra details, age groups, requirements..."></textarea></div>
+      <div class="field full"><label>Notes</label><textarea id="m-notes" rows="2" placeholder="Trackman add-ons, age groups, requirements..."></textarea></div>
+      <div class="section-divider">Ticket Tiers & Pricing</div>
+      <div class="tiers-editor full" id="tiers-editor"></div>
+      <div class="full"><button class="add-tier-btn" onclick="addTierRow()">+ Add tier</button></div>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal()">Cancel</button>
@@ -204,82 +228,51 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 <script>
 const SUPABASE_URL='https://tthkymotrfxjkylxgclf.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR0aGt5bW90cmZ4amt5bHhnY2xmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNDU0NTMsImV4cCI6MjA5NzkyMTQ1M30.HmDXmImmPQVHvOa5_aKPPyYxI440QMIsoFkB9ZUlWfA';
-
 const STATES=['AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA','KS','KY','LA','ME','MD','MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ','NM','NY','NC','ND','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'];
 const DIV_COLORS={D1:'badge-d1',D2:'badge-d2',D3:'badge-d3',JUCO:'badge-juco',NAIA:'badge-naia'};
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-let camps=[];
-let editId=null;
-
+const DEFAULT_TIERS=[{name:'Pitcher Only',price:''},{name:'Two Way Player',price:''},{name:'Position Player Only',price:''}];
+let camps=[];let editId=null;
 const stateEl=document.getElementById('f-state');
 STATES.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;stateEl.appendChild(o);});
-
 async function fetchCamps(){
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?select=*&order=date.asc`,{
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    if(!res.ok)throw new Error('Failed to load camps');
-    camps=await res.json();
-    applyFilters();
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?select=*&order=date.asc`,{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    if(!res.ok)throw new Error('Failed');
+    camps=await res.json();applyFilters();
   }catch(e){
-    showError('Could not load camps. Please check your connection and try again.');
-    document.getElementById('camps-grid').innerHTML='<div class="empty" style="grid-column:1/-1"><span class="empty-icon">⚾</span><h3>Could not load camps</h3><p>Please refresh the page to try again.</p></div>';
+    showError('Could not load camps. Please refresh.');
+    document.getElementById('camps-grid').innerHTML='<div class="empty"><span class="empty-icon">⚾</span><h3>Could not load camps</h3><p>Please refresh the page.</p></div>';
   }
 }
-
 async function insertCamp(camp){
-  const res=await fetch(`${SUPABASE_URL}/rest/v1/camps`,{
-    method:'POST',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-    body:JSON.stringify(camp)
-  });
-  if(!res.ok)throw new Error('Failed to save camp');
-  return await res.json();
+  const res=await fetch(`${SUPABASE_URL}/rest/v1/camps`,{method:'POST',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(camp)});
+  if(!res.ok)throw new Error('Failed');return await res.json();
 }
-
 async function updateCamp(id,camp){
-  const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?id=eq.${id}`,{
-    method:'PATCH',
-    headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},
-    body:JSON.stringify(camp)
-  });
-  if(!res.ok)throw new Error('Failed to update camp');
-  return await res.json();
+  const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?id=eq.${id}`,{method:'PATCH',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(camp)});
+  if(!res.ok)throw new Error('Failed');return await res.json();
 }
-
 async function removeCamp(id){
   if(!confirm('Delete this camp? This cannot be undone.'))return;
   try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?id=eq.${id}`,{
-      method:'DELETE',
-      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
-    });
-    if(!res.ok)throw new Error('Failed to delete');
-    showToast('Camp deleted!');
-    await fetchCamps();
-  }catch(e){
-    showError('Could not delete camp. Please try again.');
-  }
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?id=eq.${id}`,{method:'DELETE',headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});
+    if(!res.ok)throw new Error('Failed');
+    showToast('Camp deleted!');await fetchCamps();
+  }catch(e){showError('Could not delete camp.');}
 }
-
+function parseTiers(val){if(!val)return[];try{return JSON.parse(val);}catch(e){return[];}}
+function lowestPrice(tiers){const prices=tiers.filter(t=>t.price&&!isNaN(parseFloat(t.price))).map(t=>parseFloat(t.price));if(!prices.length)return null;return Math.min(...prices);}
 function showError(msg){const e=document.getElementById('error-bar');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
-
 function formatDate(dateStr,endStr){
   if(!dateStr)return'TBD';
-  const d=new Date(dateStr+'T12:00:00');
-  const opts={month:'short',day:'numeric',year:'numeric'};
-  const start=d.toLocaleDateString('en-US',opts);
-  if(!endStr)return start;
-  const e=new Date(endStr+'T12:00:00');
+  const d=new Date(dateStr+'T12:00:00');const opts={month:'short',day:'numeric',year:'numeric'};const start=d.toLocaleDateString('en-US',opts);
+  if(!endStr)return start;const e=new Date(endStr+'T12:00:00');
   if(d.getMonth()===e.getMonth())return`${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}–${e.getDate()}, ${e.getFullYear()}`;
   return`${start} – ${e.toLocaleDateString('en-US',opts)}`;
 }
-
 function getMonth(dateStr){if(!dateStr)return'';return MONTHS[new Date(dateStr+'T12:00:00').getMonth()];}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
 function applyFilters(){
   const search=document.getElementById('f-search').value.toLowerCase().trim();
   const month=document.getElementById('f-month').value;
@@ -287,80 +280,66 @@ function applyFilters(){
   const state=document.getElementById('f-state').value;
   const type=document.getElementById('f-type').value;
   const maxCost=document.getElementById('f-cost').value;
-
   const filtered=camps.filter(c=>{
     if(search&&!`${c.school} ${c.city} ${c.state} ${c.campname}`.toLowerCase().includes(search))return false;
     if(month&&getMonth(c.date)!==month)return false;
     if(div&&c.division!==div)return false;
     if(state&&c.state&&c.state.toUpperCase()!==state)return false;
     if(type&&c.type!==type)return false;
-    if(maxCost&&c.cost&&parseFloat(c.cost)>parseFloat(maxCost))return false;
+    if(maxCost){const tiers=parseTiers(c.tiers);const low=lowestPrice(tiers);if(low&&low>parseFloat(maxCost))return false;}
     return true;
   });
-
+  filtered.sort((a,b)=>{if(!a.date)return 1;if(!b.date)return -1;return new Date(a.date)-new Date(b.date);});
   document.getElementById('count').textContent=filtered.length;
-  document.getElementById('results-bar').innerHTML=filtered.length===camps.length
-    ?`Showing all <strong>${camps.length}</strong> camps`
-    :`Showing <strong>${filtered.length}</strong> of ${camps.length} camps`;
-
+  document.getElementById('results-bar').innerHTML=filtered.length===camps.length?`Showing all <strong>${camps.length}</strong> camps`:`Showing <strong>${filtered.length}</strong> of ${camps.length} camps`;
   const grid=document.getElementById('camps-grid');
-  if(!filtered.length){
-    grid.innerHTML=`<div class="empty" style="grid-column:1/-1"><span class="empty-icon">⚾</span><h3>No camps match your filters</h3><p>Try adjusting your search or clearing filters.</p></div>`;
-    return;
-  }
-
+  if(!filtered.length){grid.innerHTML=`<div class="empty"><span class="empty-icon">⚾</span><h3>No camps match your filters</h3><p>Try adjusting your search or clearing filters.</p></div>`;return;}
   grid.innerHTML=filtered.map(c=>{
     const divClass=DIV_COLORS[c.division]||'badge-d1';
-    return`
-    <div class="camp-card">
+    const tiers=parseTiers(c.tiers);const low=lowestPrice(tiers);const cardId='card-'+c.id;
+    return`<div class="camp-card">
       <div class="card-top">
-        <div class="card-badges">
-          <span class="badge ${divClass}">${esc(c.division)}</span>
-          <span class="badge badge-type">${esc(c.type||'Camp')}</span>
-        </div>
+        <div class="card-badges"><span class="badge ${divClass}">${esc(c.division)}</span><span class="badge badge-type">${esc(c.type||'Camp')}</span></div>
         <div class="school-name">${esc(c.school)}</div>
         ${c.campname?`<div class="camp-name">${esc(c.campname)}</div>`:''}
       </div>
       <div class="card-details">
-        <div class="detail-item">
-          <div class="detail-label">Date</div>
-          <div class="detail-value date">${formatDate(c.date,c.dateend)}</div>
-        </div>
-        <div class="detail-item">
-          <div class="detail-label">Location</div>
-          <div class="detail-value">${esc(c.city?c.city+', ':'')}${esc(c.state||'')}</div>
-        </div>
+        <div class="detail-item"><div class="detail-label">Date</div><div class="detail-value date">${formatDate(c.date,c.dateend)}</div></div>
+        <div class="detail-item"><div class="detail-label">Location</div><div class="detail-value">${esc(c.city?c.city+', ':'')}${esc(c.state||'')}</div></div>
         ${c.notes?`<div class="detail-item" style="grid-column:1/-1"><div class="detail-label">Notes</div><div class="detail-value" style="font-weight:400;color:var(--text-mid);font-size:12px">${esc(c.notes)}</div></div>`:''}
       </div>
+      ${tiers.length?`<div class="tiers-section">
+        ${low?`<div class="starting-from">Starting from <strong>$${low}</strong></div>`:''}
+        <button class="tiers-toggle" onclick="toggleTiers('${cardId}',this)">View ticket options (${tiers.length})<span class="arrow">▼</span></button>
+        <div class="tiers-body" id="${cardId}">${tiers.map(t=>`<div class="tier-row"><span class="tier-name">${esc(t.name)}</span><span class="tier-price">${t.price?'$'+parseFloat(t.price).toFixed(0):'TBD'}</span></div>`).join('')}</div>
+      </div>`:''}
       <div class="card-footer">
-        <div>
-          <div class="cost-tag">${c.cost?'$'+parseFloat(c.cost).toFixed(0):'Free / TBD'} <span>per player</span></div>
-          ${c.spots?`<div class="spots-tag${c.spots.toLowerCase().includes('limit')||parseInt(c.spots)<20?' limited':''}">${esc(c.spots)} spots</div>`:''}
-        </div>
         <div style="display:flex;gap:6px;align-items:center">
-          <button onclick="editCamp('${c.id}')" style="background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:var(--text-light);font-family:'Inter',sans-serif">Edit</button>
+          <button onclick="editCamp('${c.id}')" class="btn-edit">Edit</button>
           <button onclick="removeCamp('${c.id}')" class="btn-delete">Delete</button>
-          ${c.link?`<a href="${esc(c.link)}" target="_blank" class="register-btn">Register →</a>`:`<button class="register-btn" style="opacity:0.5;cursor:default">No link yet</button>`}
         </div>
+        ${c.link?`<a href="${esc(c.link)}" target="_blank" class="register-btn">Register →</a>`:`<button class="register-btn" style="opacity:0.5;cursor:default">No link yet</button>`}
       </div>
     </div>`;
   }).join('');
 }
-
-function clearFilters(){
-  ['f-search','f-month','f-div','f-state','f-type','f-cost'].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el.tagName==='INPUT')el.value='';else el.selectedIndex=0;
-  });
-  applyFilters();
+function toggleTiers(id,btn){document.getElementById(id).classList.toggle('open');btn.classList.toggle('open');}
+function clearFilters(){['f-search','f-month','f-div','f-state','f-type','f-cost'].forEach(id=>{const el=document.getElementById(id);if(el.tagName==='INPUT')el.value='';else el.selectedIndex=0;});applyFilters();}
+function addTierRow(name='',price=''){
+  const editor=document.getElementById('tiers-editor');
+  const row=document.createElement('div');row.className='tier-input-row';
+  row.innerHTML=`<input type="text" placeholder="e.g. Pitcher Only" value="${esc(name)}"/><input type="number" class="tier-price-input" placeholder="$" min="0" value="${esc(price)}"/><button class="remove-tier" onclick="this.parentElement.remove()">Remove</button>`;
+  editor.appendChild(row);
 }
-
+function getTiers(){
+  const rows=document.querySelectorAll('#tiers-editor .tier-input-row');const tiers=[];
+  rows.forEach(row=>{const inputs=row.querySelectorAll('input');const name=inputs[0].value.trim();const price=inputs[1].value.trim();if(name)tiers.push({name,price});});
+  return tiers;
+}
 function openModal(id=null){
-  editId=id;
-  clearForm();
+  editId=id;clearForm();document.getElementById('tiers-editor').innerHTML='';
   if(id!==null){
-    const c=camps.find(x=>x.id===id);
-    if(!c)return;
+    const c=camps.find(x=>x.id===id);if(!c)return;
     document.getElementById('m-school').value=c.school||'';
     document.getElementById('m-campname').value=c.campname||'';
     document.getElementById('m-div').value=c.division||'D1';
@@ -369,63 +348,39 @@ function openModal(id=null){
     document.getElementById('m-state').value=c.state||'';
     document.getElementById('m-date').value=c.date||'';
     document.getElementById('m-dateend').value=c.dateend||'';
-    document.getElementById('m-cost').value=c.cost||'';
-    document.getElementById('m-spots').value=c.spots||'';
     document.getElementById('m-link').value=c.link||'';
     document.getElementById('m-notes').value=c.notes||'';
+    const tiers=parseTiers(c.tiers);
+    if(tiers.length){tiers.forEach(t=>addTierRow(t.name,t.price));}
+    else{DEFAULT_TIERS.forEach(t=>addTierRow(t.name,t.price));}
     document.getElementById('modal-title').textContent='Edit Camp';
-  } else {
+  }else{
+    DEFAULT_TIERS.forEach(t=>addTierRow(t.name,t.price));
     document.getElementById('modal-title').textContent='Add Camp';
   }
   document.getElementById('modal').classList.add('open');
 }
-
 function editCamp(id){openModal(id);}
 function closeModal(){document.getElementById('modal').classList.remove('open');editId=null;}
-function clearForm(){['m-school','m-campname','m-city','m-state','m-date','m-dateend','m-cost','m-spots','m-link','m-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('m-div').selectedIndex=0;document.getElementById('m-type').selectedIndex=0;}
-
+function clearForm(){['m-school','m-campname','m-city','m-state','m-date','m-dateend','m-link','m-notes'].forEach(id=>document.getElementById(id).value='');document.getElementById('m-div').selectedIndex=0;document.getElementById('m-type').selectedIndex=0;}
 async function saveCamp(){
   const school=document.getElementById('m-school').value.trim();
   const state=document.getElementById('m-state').value.trim().toUpperCase();
   if(!school){alert('School name is required.');return;}
   if(!state){alert('State is required.');return;}
-  const camp={
-    school,campname:document.getElementById('m-campname').value.trim(),
-    division:document.getElementById('m-div').value,
-    type:document.getElementById('m-type').value,
-    city:document.getElementById('m-city').value.trim(),
-    state,
-    date:document.getElementById('m-date').value||null,
-    dateend:document.getElementById('m-dateend').value||null,
-    cost:document.getElementById('m-cost').value||null,
-    spots:document.getElementById('m-spots').value.trim(),
-    link:document.getElementById('m-link').value.trim(),
-    notes:document.getElementById('m-notes').value.trim(),
-  };
-  const btn=document.querySelector('.btn-save');
-  btn.textContent='Saving...';btn.disabled=true;
+  const tiers=getTiers();
+  const camp={school,campname:document.getElementById('m-campname').value.trim(),division:document.getElementById('m-div').value,type:document.getElementById('m-type').value,city:document.getElementById('m-city').value.trim(),state,date:document.getElementById('m-date').value||null,dateend:document.getElementById('m-dateend').value||null,link:document.getElementById('m-link').value.trim(),notes:document.getElementById('m-notes').value.trim(),tiers:tiers.length?JSON.stringify(tiers):null};
+  const btn=document.querySelector('.btn-save');btn.textContent='Saving...';btn.disabled=true;
   try{
-    if(editId!==null){
-      await updateCamp(editId,camp);
-      showToast('Camp updated!');
-    } else {
-      await insertCamp(camp);
-      showToast('Camp added!');
-    }
-    closeModal();
-    await fetchCamps();
-  }catch(e){
-    showError('Could not save camp. Please try again.');
-  }finally{
-    btn.textContent='Save Camp';btn.disabled=false;
-  }
+    if(editId!==null){await updateCamp(editId,camp);showToast('Camp updated!');}
+    else{await insertCamp(camp);showToast('Camp added!');}
+    closeModal();await fetchCamps();
+  }catch(e){showError('Could not save camp. Please try again.');}
+  finally{btn.textContent='Save Camp';btn.disabled=false;}
 }
-
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
-
 document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
-
 fetchCamps();
 </script>
 </body>
