@@ -87,6 +87,8 @@ body{font-family:'Inter',sans-serif;background:var(--chalk);color:var(--text-dar
 .toast.show{opacity:1}
 .error-bar{background:#FCEBEB;color:#791F1F;padding:10px 24px;text-align:center;font-size:13px;display:none}
 .error-bar.show{display:block}
+.btn-delete{background:transparent;border:0.5px solid #FCEBEB;border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:#791F1F;font-family:'Inter',sans-serif}
+.btn-delete:hover{background:#FCEBEB}
 @media(max-width:600px){.filters-inner{flex-direction:column}.filter-group{min-width:100%}.modal-grid{grid-template-columns:1fr}.camps-grid{grid-template-columns:1fr}.hero{padding:32px 16px 40px}}
 </style>
 </head>
@@ -247,6 +249,21 @@ async function updateCamp(id,camp){
   return await res.json();
 }
 
+async function removeCamp(id){
+  if(!confirm('Delete this camp? This cannot be undone.'))return;
+  try{
+    const res=await fetch(`${SUPABASE_URL}/rest/v1/camps?id=eq.${id}`,{
+      method:'DELETE',
+      headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}
+    });
+    if(!res.ok)throw new Error('Failed to delete');
+    showToast('Camp deleted!');
+    await fetchCamps();
+  }catch(e){
+    showError('Could not delete camp. Please try again.');
+  }
+}
+
 function showError(msg){const e=document.getElementById('error-bar');e.textContent=msg;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),5000);}
 
 function formatDate(dateStr,endStr){
@@ -322,6 +339,7 @@ function applyFilters(){
         </div>
         <div style="display:flex;gap:6px;align-items:center">
           <button onclick="editCamp('${c.id}')" style="background:transparent;border:0.5px solid var(--chalk-mid);border-radius:var(--radius);padding:6px 10px;font-size:11px;cursor:pointer;color:var(--text-light);font-family:'Inter',sans-serif">Edit</button>
+          <button onclick="removeCamp('${c.id}')" class="btn-delete">Delete</button>
           ${c.link?`<a href="${esc(c.link)}" target="_blank" class="register-btn">Register →</a>`:`<button class="register-btn" style="opacity:0.5;cursor:default">No link yet</button>`}
         </div>
       </div>
